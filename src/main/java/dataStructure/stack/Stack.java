@@ -1,6 +1,6 @@
 package dataStructure.stack;
 
-public interface IStack<E> {
+public interface Stack<E> {
 	int getSize();
 
 	boolean isEmpty();

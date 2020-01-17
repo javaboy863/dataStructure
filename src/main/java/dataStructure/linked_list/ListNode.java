@@ -38,6 +38,7 @@ public class ListNode<E> {
 		dummyHead = new Node();
 		this.size = 0;
 	}
+
 	public ListNode(E[] nums){
 		dummyHead = new Node();
 		if (nums == null){
@@ -47,6 +48,63 @@ public class ListNode<E> {
 			add(i, nums[i]);
 		}
 	}
+
+
+	public E get(int index){
+		if (index < 0 || index >size){
+			throw new IllegalArgumentException("index error...");
+		}
+		Node root = this.dummyHead.next;
+		for (int i = 0; i < index; i++) {
+			root = root.next;
+		}
+		return root.data;
+	}
+
+
+	public void add(int index,E data){
+		//边界，这里index可以是size是因为要插入最后。
+		if (index < 0 || index >size){
+			throw new IllegalArgumentException("index error...");
+		}
+		Node prev = this.dummyHead;
+		//因为有了dummy节点，所以取到的是实际容量的前一个元素
+		for (int i = 0; i < index; i++) {
+			prev = prev.next;
+		}
+		//新node的下一个是原来元素的下一个。
+		Node node = new Node(data,prev.next);
+		//把原来元素下一个指向新node
+		prev.next = node;
+		size++;
+	}
+
+
+	/**
+	 * 找到要删除元素的前一个元素，这个元素的next指向要删除元素的next即完成。
+	 */
+	public E remove(int index){
+		//注意边界，不能删除index >=size的，这里索引是从0开始的，size比索引大于1.
+		if (index < 0 || index >=size){
+			throw new IllegalArgumentException("index error...");
+		}
+		Node prve = this.dummyHead;
+		//应为有了dummy元素，所以取到的是前一个元素
+		for (int i = 0; i < index; i++) {
+			prve = prve.next;
+		}
+		//拿到要删除元素的前一个元素
+		Node retNode = prve.next;
+		//要删除元素的下一个元素跟前一个元素的下一个元素相连。
+		prve.next = retNode.next;
+		//要删除的元素置空
+		retNode.next = null;
+		size--;
+		return retNode.data;
+	}
+
+	/**重要的方法分割线，上面都是重要的方法。 **/
+
 	public int getSize(){
 		return size;
 	}
@@ -68,23 +126,6 @@ public class ListNode<E> {
 		}
 		cur.data = e;
 	}
-	public void add(int index,E data){
-		//边界，这里index可以是size是因为要插入最后。
-		if (index < 0 || index >size){
-			throw new IllegalArgumentException("index error...");
-		}
-		Node prev = this.dummyHead;
-		//因为有了dummy节点，所以取到的是实际容量的前一个元素
-		for (int i = 0; i < index; i++) {
-			prev = prev.next;
-		}
-		//新node的下一个是原来元素的下一个。
-		Node node = new Node(data,prev.next);
-		//把原来元素下一个指向新node
-		prev.next = node;
-		size++;
-	}
-
 
 	/**
 	 * 头部加元素
@@ -100,23 +141,14 @@ public class ListNode<E> {
 		this.add(size,data);
 	}
 
-	public E get(int index){
-		if (index < 0 || index >size){
-			throw new IllegalArgumentException("index error...");
-		}
-		Node root = this.dummyHead.next;
-		for (int i = 0; i < index; i++) {
-			root = root.next;
-		}
-		return root.data;
-	}
+
 
 	public E getFirst(){
 		return get(0);
 	}
 
 	public E getLast(){
-		return get(size);
+		return get(size-1);
 	}
 
 	public boolean contains(E data){
@@ -130,34 +162,13 @@ public class ListNode<E> {
 		return false;
 	}
 
-	/**
-	 * 找到要删除元素的前一个元素，这个元素的next指向要删除元素的next即完成。
-	 */
-	public void remove(int index){
-		//注意边界，不能删除index >=size的，这里索引是从0开始的，size比索引大于1.
-		if (index < 0 || index >=size){
-			throw new IllegalArgumentException("index error...");
-		}
-		Node prve = this.dummyHead;
-		//应为有了dummy元素，所以取到的是前一个元素
-		for (int i = 0; i < index; i++) {
-			prve = prve.next;
-		}
-		//拿到要删除元素的前一个元素
-		Node retNode = prve.next;
-		//要删除元素的下一个元素跟前一个元素的下一个元素相连。
-		prve.next = retNode.next;
-		//要删除的元素置空
-		retNode.next = null;
-		size--;
+
+	public E removeFirst() {
+		return this.remove(0);
 	}
 
-	public void removeFirst(){
-		this.remove(0);
-	}
-
-	public void removeLast(){
-		this.remove(size);
+	public E removeLast(){
+		return this.remove(size-1);
 	}
 
 	public void removeElement(E data){
@@ -176,7 +187,6 @@ public class ListNode<E> {
 			retNode =null;
 			size--;
 		}
-
 	}
 
 	@Override
