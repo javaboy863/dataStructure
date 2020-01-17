@@ -2,11 +2,11 @@ package dataStructure.set;
 
 import dataStructure.linked_list.ListNode;
 
-public class ListnodeSet<E> implements Set<E> {
+public class ListNodeSet<E> implements Set<E> {
 
 	private ListNode<E> listNode;
 
-	public ListnodeSet(){
+	public ListNodeSet(){
 		listNode = new ListNode<>();
 	}
 
@@ -38,7 +38,7 @@ public class ListnodeSet<E> implements Set<E> {
 	}
 
 	public static void main(String[] args) {
-		ListnodeSet listnodeSet = new ListnodeSet();
+		ListNodeSet listnodeSet = new ListNodeSet();
 		for (int i = 0; i < 10; i++) {
 			listnodeSet.add(i);
 		}

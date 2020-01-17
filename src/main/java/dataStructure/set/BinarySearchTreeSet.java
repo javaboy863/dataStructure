@@ -2,9 +2,9 @@ package dataStructure.set;
 
 import dataStructure.tree.BinarySearchTree;
 
-public class BinarySearchTreeSet<E extends Comparable<E>> implements Set<E> {
+public class BinarySearchTreeSet<E extends Comparable<E>,Value> implements Set<E> {
 
-    private BinarySearchTree<E> bst;
+    private BinarySearchTree<E,Value> bst;
 
     public BinarySearchTreeSet(){
         bst = new BinarySearchTree<>();
@@ -22,12 +22,12 @@ public class BinarySearchTreeSet<E extends Comparable<E>> implements Set<E> {
 
     @Override
     public void add(E e){
-        bst.add(e);
+        bst.insert(e,null);
     }
 
     @Override
     public boolean contains(E e){
-        return bst.contains(e);
+        return bst.search(e) != null;
     }
 
     @Override
