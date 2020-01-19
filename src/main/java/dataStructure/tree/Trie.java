@@ -44,12 +44,14 @@ public class Trie {
         Node cur = root;
         for(int i = 0 ; i < word.length() ; i ++){
             char c = word.charAt(i);
+            //这里注意，root默认有个node是empty 的map。
             if(cur.next.get(c) == null)
                 cur.next.put(c, new Node());
-            //指向下一个
+            //指向下一个,这里的next是个node，node的value即是下一个节点，node的key则是字典的一个char。
+            //这里对于一个新的，next node一定是empty的，到了上面方法的开始get c一定是null，所以会放个新的，也就是下一个了。
             cur = cur.next.get(c);
         }
-        //设置标记
+        //一个单词分解完后，设置是个单词的标记
         if(!cur.isWord){
             cur.isWord = true;
             size ++;
@@ -82,8 +84,46 @@ public class Trie {
         return true;
     }
 
-    public static void main(String[] args) {
+    public boolean match(String word) {
+        return match(root, word, 0);
+    }
 
+    /**
+     * 模式匹配 , abbc = a..c
+     *
+     */
+    private boolean match(Node node, String word, int index){
+
+         if(index == word.length())
+            return node.isWord;
+        char c = word.charAt(index);
+        if(c != '.'){
+            if(node.next.get(c) == null)
+                return false;
+            return match(node.next.get(c), word, index + 1);
+        }
+        else{
+            for(char nextChar: node.next.keySet())
+                //特殊匹配符.的情况下，跟下一个字符里的任意一个匹配上就算匹配上了
+                 if(match(node.next.get(nextChar), word, index + 1))
+                    return true;
+            return false;
+        }
+    }
+
+    public static void main(String[] args) {
+        testMatch();
+
+    }
+
+    private static void testMatch() {
+        Trie trie = new Trie();
+        trie.add("abbc");
+        trie.add("abcc");
+        System.out.println(trie.match("a..c"));
+    }
+
+    private static void testCompare(){
         System.out.println("Pride and Prejudice");
 
         ArrayList<String> words = new ArrayList<>();

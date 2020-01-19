@@ -4,6 +4,12 @@ import dataStructure.array.Array;
 
 import java.util.Random;
 
+/**
+ * 排序
+ * 1：每次取出最大extraMax()或最小，然后放到一个容器里既完成。
+ * 2：每次拿堆顶的，跟右边交换，交换到堆顶的做siftdown。然后在拿堆顶的重复之。空间复杂度O(1)。
+ *
+ */
 public class MaxHeap<E extends Comparable<E>> {
 
 	private Array<E> data;
@@ -21,7 +27,7 @@ public class MaxHeap<E extends Comparable<E>> {
 	 */
 	public MaxHeap(E[] arr){
 		data = new Array<E>(arr);
-		//从尾部父类节点（即数组最后节点）开始逐个下浮
+		//找到数组里最后一个非叶子节点的节点（即最后一个父节点），然后开始逐个下浮，直到根
 		for(int i = parent(arr.length - 1) ; i >= 0 ; i --)
 			siftDown(i);
 	}
@@ -92,14 +98,16 @@ public class MaxHeap<E extends Comparable<E>> {
 	 * 跟左右孩子节点中最大的做比较，如果当前节点小，则交换。大于则不用交换了（满足二叉搜索树性质了，父亲节点大于两个孩子）
 	 */
 	private void siftDown(int k){
-		//只要左孩子索引小于总节点数
+		//取k的左孩子的索引不要越界
 		while(leftChild(k) < data.getSize()){
 			int j = leftChild(k); // 在此轮循环中,data[k]和data[j]交换位置
-			//j+1代表右孩子
+			//j+1代表右孩子，右孩子索引也不要越界
 			if( j + 1 < data.getSize() &&
+					//如果右孩子大于左孩子
 					data.get(j + 1).compareTo(data.get(j)) > 0 )
+				//则J++取右孩子。
 				j ++;
-			// data[j] 是 leftChild 和 rightChild 中的最大值
+			// 此时data[j] 是 leftChild 和 rightChild 中的最大值
 			//如果当前节点小于最大值则交换
 			if(data.get(k).compareTo(data.get(j)) >= 0 )
 				break;
@@ -122,6 +130,11 @@ public class MaxHeap<E extends Comparable<E>> {
 
 	public static void main(String[] args) {
 
+
+	}
+
+
+	private static void testHeap(){
 		int n = 1000000;
 		Random random = new Random();
 		Integer[] testData = new Integer[n];
@@ -134,6 +147,7 @@ public class MaxHeap<E extends Comparable<E>> {
 		double time2 = testHeap(testData, true);
 		System.out.println("With heapify: " + time2 + " s");
 	}
+
 	private static double testHeap(Integer[] testData, boolean isHeapify){
 
 		long startTime = System.nanoTime();
