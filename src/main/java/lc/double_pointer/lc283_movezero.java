@@ -11,7 +11,7 @@ public class lc283_movezero {
 	 * 时间O(1) 空间(O1)
 	 *  lc 27,26,80 待解决
 	 */
-	public static int[]  move(int[] data){
+	public static Integer[]  move(Integer[] data){
 
 		int k =0;
 		for (int i = 0; i < data.length; i++) {
@@ -25,7 +25,7 @@ public class lc283_movezero {
 
 
 	public static void main(String[] args) {
-		int[] i ={1,0,2,0,12,0,5,9,2};
+		Integer[] i ={1,0,2,0,12,0,5,9,2};
 		System.out.println(Arrays.toString(move(i)));
 
 	}

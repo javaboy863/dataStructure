@@ -9,13 +9,13 @@ import util.ArrayUtil;
 public class QuicSort implements ISort {
 
 	@Override
-	public int[] sort(int[] data) {
+	public Comparable[] sort(Comparable[] data) {
 		ArrayUtil.assertEmpty(data);
-		int[] sortedData = sort(data, 0, data.length-1);
+		Comparable[] sortedData = sort(data, 0, data.length-1);
 		return sortedData;
 	}
 
-	private int[] sort(int[] data,int l,int r) {
+	private Comparable[] sort(Comparable[] data,int l,int r) {
 		//左边索引右边重合代表本趟排序结束
 		if (l >= r){
 			return null;
@@ -32,18 +32,16 @@ public class QuicSort implements ISort {
 	  *  返回p，使得arr[l....p-1] < arr[p] ;arr[p+1....r] > arr[p]
 	  *  这里的j是小于V区间的索引尾部，i是代表对比的下一个数组里的元素。l代表元素左边
 	  */
-	private int partition(int[] data,int l,int r) {
-//		Random random = new Random();
-//		int randomVal = random.nextInt(r);
-//		ArrayUtil.swap(data,l,randomVal);
+	private int partition(Comparable[] data,int l,int r) {
+//		ArrayUtil.swap( arr, l , (int)(Math.random()*(r-l+1))+l );
 
 		//本次的基准索引坐标，本次用左边第一个作为基准点
-		int v = data[l];
+		Comparable v = data[l];
 		//是小于V区间的索引尾部,j+1到i-1都是大于元素V的。
 		int j = l ;
 		for (int i = l+1; i <= r; i++) {
 			// >v 的情况直接i++跳过，对比当前i后面的元素
-			if (data[i] < v){
+			if (data[i].compareTo(v) < 0){
 				//注意此处把j+1和i交换
 				ArrayUtil.swap(data,j+1,i);
 				j++;

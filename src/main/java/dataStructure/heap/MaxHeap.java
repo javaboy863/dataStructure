@@ -104,12 +104,12 @@ public class MaxHeap<E extends Comparable<E>> {
 			//j+1代表右孩子，右孩子索引也不要越界
 			if( j + 1 < data.getSize() &&
 					//如果右孩子大于左孩子
-					data.get(j + 1).compareTo(data.get(j)) > 0 )
+					data.get(j + 1).compareTo(data.get(j)) > 0 ) //这里用<0 即变成了最小堆
 				//则J++取右孩子。
 				j ++;
 			// 此时data[j] 是 leftChild 和 rightChild 中的最大值
 			//如果当前节点小于最大值则交换
-			if(data.get(k).compareTo(data.get(j)) >= 0 )
+			if(data.get(k).compareTo(data.get(j)) >= 0 ) //这里用<=0 即变成了最小堆，联合上面
 				break;
 			data.swap(k, j);
 			//交换完后索引位置继续对比下一个

@@ -5,9 +5,6 @@ package sort;
  */
 public interface ISort {
 
-	/**
-	 *
-	 */
-	int[] sort(int[] data);
+	Comparable[] sort(Comparable[] data);
 
 }

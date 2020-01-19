@@ -18,7 +18,7 @@ public class lc75_SortColor {
 	 *
 	 * lc 88，215
 	 */
-	static int[] sort(int[] data){
+	static Integer[] sort(Integer[] data){
 		int zero = -1;
 		int two = data.length;
 		for (int i = 0; i < two;) {
@@ -38,7 +38,7 @@ public class lc75_SortColor {
 	}
 
 	public static void main(String[] args) {
-		int[] i ={1,0,2,0,2,1,0,2,2};
+		Integer[] i ={1,0,2,0,2,1,0,2,2};
 		System.out.println(Arrays.toString(sort(i)));
 	}
 }

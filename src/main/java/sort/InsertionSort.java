@@ -9,7 +9,7 @@ import util.ArrayUtil;
 public class InsertionSort implements ISort {
 
 	@Override
-	public int[] sort(int[] data) {
+	public Comparable[] sort(Comparable[] data) {
 		ArrayUtil.assertEmpty(data);
 		int length = data.length;
 		//第1个元素可以不考虑，从2开始，所以索引从1开始
@@ -17,7 +17,7 @@ public class InsertionSort implements ISort {
 			//每次拿I和I前面一个元素比较。j>0最多循环到索引1的位置
 			for (int j = i; j >0; j--) {
 				//拿J和J-1作对比，只要小于就交换，否则只要有一个大于就break结束
-				if (data[j] < data[j-1]){
+				if (data[j].compareTo(data[j-1]) < 0){
 					ArrayUtil.swap(data,j,j-1);
 				}else {
 					break;

@@ -8,13 +8,13 @@ import util.ArrayUtil;
 public class BubbleSort implements ISort {
 
 	@Override
-	public int[] sort(int[] data) {
+	public Comparable[] sort(Comparable[] data) {
 		ArrayUtil.assertEmpty(data);
 		int length = data.length;
 		for (int i = 0; i < length; i++) {
 			//第二次的终止条件是n-1,否则会溢出
 			for (int j = 0; j < length -1; j++) {
-				if (data[j] > data[j+1]){
+				if (data[j].compareTo(data[j+1]) > 0){
 					ArrayUtil.swap(data,j,j+1);
 				}
 			}

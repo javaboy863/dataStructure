@@ -4,10 +4,19 @@ import util.FileOperation;
 
 import java.util.ArrayList;
 
+/**
+ * 性质1：每个节点要么是黑色，要么是红色。
+ * 性质2：根节点是黑色。
+ * 性质3：每个叶子节点（NIL）是黑色。
+ * 性质4：每个红色结点的两个子结点一定都是黑色。
+ * 性质5：任意一结点到每个叶子结点的路径都包含数量相同的黑结点。(黑平衡)
+ *
+ */
 public class RBTree<K extends Comparable<K>, V> {
 
     private static final boolean RED = true;
     private static final boolean BLACK = false;
+
 
     private class Node{
         public K key;
@@ -20,6 +29,7 @@ public class RBTree<K extends Comparable<K>, V> {
             this.value = value;
             left = null;
             right = null;
+             //默认节点是红色，表示是融合的
             color = RED;
         }
     }
@@ -85,7 +95,11 @@ public class RBTree<K extends Comparable<K>, V> {
         return x;
     }
 
-    // 颜色翻转
+
+    /**
+     * 颜色翻转
+     * 维护性质4：每个红色结点的两个子结点一定都是黑色。
+     */
     private void flipColors(Node node){
 
         node.color = RED;
@@ -96,7 +110,7 @@ public class RBTree<K extends Comparable<K>, V> {
     // 向红黑树中添加新的元素(key, value)
     public void add(K key, V value){
         root = add(root, key, value);
-        root.color = BLACK; // 最终根节点为黑色节点
+        root.color = BLACK; // 最终根节点为黑色节点，性质2
     }
 
     // 向以node为根的红黑树中插入元素(key, value)，递归算法
@@ -107,27 +121,30 @@ public class RBTree<K extends Comparable<K>, V> {
             size ++;
             return new Node(key, value); // 默认插入红色节点
         }
-
+        //按正常二叉搜索树方式插入。
         if(key.compareTo(node.key) < 0)
             node.left = add(node.left, key, value);
         else if(key.compareTo(node.key) > 0)
             node.right = add(node.right, key, value);
         else // key.compareTo(node.key) == 0
             node.value = value;
-
+        //判断情况1，左子树黑，由子树红，左旋转
         if (isRed(node.right) && !isRed(node.left))
             node = leftRotate(node);
-
+        //判断情况2，左子树红，左子树的左子树也是红则有旋转
         if (isRed(node.left) && isRed(node.left.left))
             node = rightRotate(node);
-
+        //情况三，左右子树都红，则直接反转颜色
         if (isRed(node.left) && isRed(node.right))
             flipColors(node);
 
         return node;
     }
 
-    // 返回以node为根节点的二分搜索树中，key所在的节点
+    /**
+     * 返回以node为根节点的二分搜索树中，key所在的节点
+     * 按正常二分搜索树的方式找
+     */
     private Node getNode(Node node, K key){
 
         if(node == null)
@@ -151,6 +168,9 @@ public class RBTree<K extends Comparable<K>, V> {
         return node == null ? null : node.value;
     }
 
+    /**
+     * 找到后直接设置新值即可
+     */
     public void set(K key, V newValue){
         Node node = getNode(root, key);
         if(node == null)
@@ -196,7 +216,7 @@ public class RBTree<K extends Comparable<K>, V> {
 
         if( node == null )
             return null;
-
+        //正常二分搜索树删除方法
         if( key.compareTo(node.key) < 0 ){
             node.left = remove(node.left , key);
             return node;
