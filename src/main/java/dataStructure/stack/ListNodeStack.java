@@ -1,16 +1,16 @@
 package dataStructure.stack;
 
-import dataStructure.linked_list.ListNode;
+import dataStructure.linked_list.linkedNode;
 
 /**
  * 链表实现的栈 ，先进后出
  * 应用：系统调用栈，撤销回退
  */
 public class ListNodeStack<E> implements Stack<E> {
-	private ListNode<E> listNode;
+	private linkedNode<E> listNode;
 
 	public ListNodeStack(){
-		listNode = new ListNode<>();
+		listNode = new linkedNode<>();
 	}
 
 	@Override

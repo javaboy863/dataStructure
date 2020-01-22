@@ -1,13 +1,13 @@
 package dataStructure.set;
 
-import dataStructure.linked_list.ListNode;
+import dataStructure.linked_list.linkedNode;
 
 public class ListNodeSet<E> implements Set<E> {
 
-	private ListNode<E> listNode;
+	private linkedNode<E> listNode;
 
 	public ListNodeSet(){
-		listNode = new ListNode<>();
+		listNode = new linkedNode<>();
 	}
 
 	@Override
