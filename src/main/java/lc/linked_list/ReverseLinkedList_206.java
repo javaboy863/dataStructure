@@ -18,6 +18,10 @@ package lc.linked_list;
 import dataStructure.linked_list.ListNode;
 
 /**
+ * 206.反转一个单链表。
+ * 输入: 1->2->3->4->5->NULL
+ * 输出: 5->4->3->2->1->NULL
+ *
  * 题目：反转数组，保持链表值不变，只是next反转
  * 思路：定义pre，cur，next三个指针。pre一开始是null。cur=当前的head，next等于head.next。初始化完毕。
  * 然后cur.next指向pre，完成当前节点的指针变动。然后移动定义的三个指针：pre后移指向cur，cur指向next，next指向cur.next

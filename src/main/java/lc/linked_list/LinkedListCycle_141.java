@@ -43,6 +43,9 @@
 import dataStructure.linked_list.ListNode;
 
 /***
+ * 141. 环形链表
+ * 给定一个链表，判断链表中是否有环。
+ *
  * 思路 俩指针，快的一次走2格子，慢的一次走1格子。最后如果快的慢的能重合代表有环。
  */
 public class LinkedListCycle_141 {

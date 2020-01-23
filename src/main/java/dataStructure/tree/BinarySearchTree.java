@@ -346,13 +346,15 @@ public class BinarySearchTree<Key extends Comparable<Key>, Value> {
 				return leftNode;
 			}
 
-			// 待删除节点左右子树均不为空的情况
-
-			// 找到比待删除节点大的最小节点, 即待删除节点右子树的最小节点
-			// 用这个节点顶替待删除节点的位置
+			/**
+			 * 待删除节点左右子树均不为空的情况
+			 * 找到比待删除节点大的最小节点, 即待删除节点右子树的最小节点
+			 * 用这个节点顶替待删除节点的位置
+			 */
+			//先找到node右子树节点的最小节点（比待删除节点大的最小节点）
 			Node successor = new Node(minimum(node.right));
 			count++;
-
+			//在node的右子树中，把这个最小节点删除，然后会返回右子树，所以在关联上这个最小节点的右子树。
 			successor.right = removeMin(node.right);
 			successor.left = node.left;
 

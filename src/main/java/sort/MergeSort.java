@@ -34,6 +34,7 @@ public class MergeSort implements ISort {
 		if (l==r){
 			return null;
 		}
+		//这里因为tmp是从0开始的，所以要r-l后+1
 		Comparable[] tmp = new Comparable[r-l+1];
 		int i=0;
 		int l1=l;

@@ -128,10 +128,22 @@ public class RBTree<K extends Comparable<K>, V> {
             node.right = add(node.right, key, value);
         else // key.compareTo(node.key) == 0
             node.value = value;
-        //判断情况1，左子树黑，由子树红，左旋转
+
+        //下面三种情况都是跟节点是黑色的节点，因为添加完毕后根节点都是黑色
+        //左旋转情况，左子不是红（null节点也不是红），右子树红对应
+        //         黑
+        //        /
+        //       红
+        //        \
+        //         红
         if (isRed(node.right) && !isRed(node.left))
             node = leftRotate(node);
-        //判断情况2，左子树红，左子树的左子树也是红则有旋转
+        //右旋转情况，左子树红，左子树的左子树也是红则有旋转
+        //         黑
+        //        /
+        //       红
+        //      /
+        //     红
         if (isRed(node.left) && isRed(node.left.left))
             node = rightRotate(node);
         //情况三，左右子树都红，则直接反转颜色

@@ -37,9 +37,9 @@ public class AVLTree<K extends Comparable<K>, V> {
 
     // 判断该二叉树是否是一棵二分搜索树
     public boolean isBST(){
-
         ArrayList<K> keys = new ArrayList<>();
         inOrder(root, keys);
+        //中序遍历是有序的，所有遍历后放到一个list中，然后遍历list，看list中第二个元素是否比第一个元素小。
         for(int i = 1 ; i < keys.size() ; i ++)
             if(keys.get(i - 1).compareTo(keys.get(i)) > 0)
                 return false;
@@ -66,8 +66,9 @@ public class AVLTree<K extends Comparable<K>, V> {
 
         if(node == null)
             return true;
-
+        //左子树的高度减去右子树高度，得到平衡因子
         int balanceFactor = getBalanceFactor(node);
+        //绝对值大于1则非平衡。-1情况代表右子树比左子树高，右边失衡了。
         if(Math.abs(balanceFactor) > 1)
             return false;
         return isBalanced(node.left) && isBalanced(node.right);
@@ -157,19 +158,25 @@ public class AVLTree<K extends Comparable<K>, V> {
         // 更新height
         node.height = 1 + Math.max(getHeight(node.left), getHeight(node.right));
 
-        // 计算平衡因子
+        // 计算当前节点的平衡因子
         int balanceFactor = getBalanceFactor(node);
 
         // 平衡维护
-        // LL
+        // LL，balanceFactor>1,node的左子树也>=0代表左子树失衡了，左边连续三个元素，需要右旋转
+        //              8
+        //             7
+        //            6
         if (balanceFactor > 1 && getBalanceFactor(node.left) >= 0)
             return rightRotate(node);
 
-        // RR
+        // RR，balanceFactor<-1,node的左子树也<= 0代表右子树失衡了，右边连续三个元素
         if (balanceFactor < -1 && getBalanceFactor(node.right) <= 0)
             return leftRotate(node);
 
-        // LR
+        // LR balanceFactor>1,node的左子树也 < 0代表左边连续二个元素，右边第有1个元素，需要先左旋，在右旋，如图
+        //      8
+        //    6
+        //      7
         if (balanceFactor > 1 && getBalanceFactor(node.left) < 0) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
@@ -251,7 +258,7 @@ public class AVLTree<K extends Comparable<K>, V> {
             retNode = node;
         }
         else{   // key.compareTo(node.key) == 0
-
+            //相比bst，此处的判断是互斥的。
             // 待删除节点左子树为空的情况
             if(node.left == null){
                 Node rightNode = node.right;
@@ -275,7 +282,8 @@ public class AVLTree<K extends Comparable<K>, V> {
                 // 找到比待删除节点大的最小节点, 即待删除节点右子树的最小节点
                 // 用这个节点顶替待删除节点的位置
                 Node successor = minimum(node.right);
-                //successor.right = removeMin(node.right);
+                //successor.right = removeMin(node.right); 等价于 remove(node.right, successor.key);
+                // 因为successor.key已经在上一步Node successor = minimum(node.right)找到了。
                 successor.right = remove(node.right, successor.key);
                 successor.left = node.left;
 
@@ -295,7 +303,7 @@ public class AVLTree<K extends Comparable<K>, V> {
         // 计算平衡因子
         int balanceFactor = getBalanceFactor(retNode);
 
-        // 平衡维护
+        // 平衡维护，跟inster一致。
         // LL
         if (balanceFactor > 1 && getBalanceFactor(retNode.left) >= 0)
             return rightRotate(retNode);

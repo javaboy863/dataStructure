@@ -2,6 +2,13 @@ package sort;
 
 import util.ArrayUtil;
 
+/**
+ * 解决了重复元素过多的情况下，普通的快排性能问题。
+ * 这种思路 大于和小于v的俩index往中间走的方式，
+ * 如果在小的那边找到大的则停止，大的那边找到小的也停止，然后交换两边，在继续走。
+ * 一次排序后交换 l和j
+ *
+ */
 public class QuickSort2Ways {
 
     // 我们的算法类不允许产生任何实例
@@ -12,7 +19,7 @@ public class QuickSort2Ways {
     private static int partition(Comparable[] arr, int l, int r){
 
         // 随机在arr[l...r]的范围中, 选择一个数值作为标定点pivot
-        swap( arr, l , (int)(Math.random()*(r-l+1))+l );
+//        swap( arr, l , (int)(Math.random()*(r-l+1))+l );
 
         Comparable v = arr[l];
 
@@ -39,7 +46,7 @@ public class QuickSort2Ways {
             i ++;
             j --;
         }
-
+        //这里的L其实是选出的标准值V。
         swap(arr, l, j);
 
         return j;

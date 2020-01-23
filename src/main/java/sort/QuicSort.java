@@ -47,7 +47,7 @@ public class QuicSort implements ISort {
 				j++;
 			}
 		}
-		//最后把基准和J交换。
+		//最后把基准l和J交换。
 		ArrayUtil.swap(data,l,j);
 		return j;
 	}
