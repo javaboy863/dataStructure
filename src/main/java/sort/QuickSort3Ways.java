@@ -1,70 +1,71 @@
 package sort;
 
-import util.ArrayUtil;
+import java.util.Arrays;
 
-public class QuickSort3Ways implements ISort{
+/**
+ * 在二路排序的基础上，把等于value的元素放在另一个区间内，不参与下次的排序。
+ *
+ * 1.避免了二路排序解决不了的数组近乎有序的情况，先随机取出一个val，和第一个元素交换。
+ * 2.定义三个指针，lt从头开始指向小于val的区域后一个元素lt = start-1，i指向目前比较的元素i= start，gt从尾开始指向大于val的第一个元素gt = end+1。保证一开始都是空集合。
+ * 3.当i所指向的值小于等于val，swap（i，lt+1），lt++。当i所指向的值大于等于val，swap（i，gt-1）gt--，否则i++。直到i>=gt排序完成。将start和lt交换。
+ * 4.[start,lt-1]和[gt,end]重复2.3直到start>end，排序完成。
+ * @author ice
+ */
+public class QuickSort3Ways {
+	public static void qiuckSort3(int[] array) {
+		if (array.length <= 1) return;
+		int start = 0;
+		int end = array.length - 1;
+		qiuck3(array, start, end);
+	}
 
-    private QuickSort3Ways(){}
-
-    // 递归使用快速排序,对arr[l...r]的范围进行排序
-    private static void sort(Comparable[] arr, int l, int r){
-
-        // 对于小规模数组, 使用插入排序
-//        if( r - l <= 15 ){
-//            InsertionSort.sort(arr, l, r);
+	private static void qiuck3(int[] array, int start, int end) {
+		if (start > end) return;
+//        if(end - start <=15){
+		//如果数据量少就使用直接插入
+//            insert(array,start,end);
 //            return;
 //        }
 
-        // 随机在arr[l...r]的范围中, 选择一个数值作为标定点pivot
-        swap( arr, l, (int)(Math.random()*(r-l+1)) + l );
+		int random = (int) (Math.random() * (end - start + 1) + start);
+		swap(array, random, start);
+		//找到一个随机key
+		int value = array[start];
+		int lt = start;
+		int gt = end + 1;
+		int i = start + 1;
+		for (; i < gt; i++) {
+			if (array[i] < value) {
+				//放到小于的区域
+				swap(array, lt + 1, i);
+				lt++;
+				i++;
+			} else if (array[i] > value) {
+				//放到大于区域
+				swap(array, gt - 1, i);
+				gt--;
+			}
+		}
+		swap(array, lt, start);
+		//直接跳过相等元素的比较
+		qiuck3(array, start, lt - 1);
+		qiuck3(array, gt, end);
+	}
 
-        Comparable v = arr[l];
+	private static void swap(int[] arr, int i, int j) {
+		int t = arr[i];
+		arr[i] = arr[j];
+		arr[j] = t;
+	}
 
-        int lt = l;     // arr[l+1...lt] < v
-        int gt = r + 1; // arr[gt...r] > v
-        int i = l+1;    // arr[lt+1...i) == v
-        while( i < gt ){
-            if( arr[i].compareTo(v) < 0 ){
-                swap( arr, i, lt+1);
-                i ++;
-                lt ++;
-            }
-            else if( arr[i].compareTo(v) > 0 ){
-                swap( arr, i, gt-1);
-                gt --;
-            }
-            else{ // arr[i] == v
-                i ++;
-            }
-        }
-
-        swap( arr, l, lt );
-
-        sort(arr, l, lt-1);
-        sort(arr, gt, r);
-    }
-
-    private static void swap(Object[] arr, int i, int j) {
-        Object t = arr[i];
-        arr[i] = arr[j];
-        arr[j] = t;
-    }
-
-
-    @Override
-    public  Comparable[] sort(Comparable[] arr){
-        int n = arr.length;
-        sort(arr, 0, n-1);
-        return null;
-    }
-
-    // 测试 QuickSort3Ways
-    public static void main(String[] args) {
-
-        // 三路快速排序算法也是一个O(nlogn)复杂度的算法
-        // 可以在1秒之内轻松处理100万数量级的数据
-        int N = 1000000;
-        ArrayUtil.orderAndPrintArr(new QuickSort3Ways());
-        return;
-    }
+	// 测试 QuickSort3Ways
+	public static void main(String[] args) {
+		// 三路快速排序算法也是一个O(nlogn)复杂度的算法
+		// 可以在1秒之内轻松处理100万数量级的数据
+		int N = 1000000;
+        int[] data = {1, 2, 3, 1, 1, 2, 3, 4, 6, 6, 1, 1, 2, 32};
+        QuickSort2Ways.qiuckSort2(data);
+        System.out.println(Arrays.toString(data));
+		return;
+	}
 }

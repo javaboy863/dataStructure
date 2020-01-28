@@ -14,6 +14,9 @@
 // Related Topics 数组 双指针
 
 package lc.double_pointer;
+
+import java.util.Arrays;
+
 /**
  * [0,1,0,3,12] ，双指针，第一个指针指向0,用于保存非0元素。第二个指针指不断遍历，
  * 发现非0元素后就和K指向的位置交换元素，然后K索引++。
@@ -23,6 +26,9 @@ package lc.double_pointer;
 public class MoveZeroes_283 {
 	public static void main(String[] args) {
 		Solution solution = new MoveZeroes_283().new Solution();
+		int[] nums = {1,0,12,3,2};
+		solution.moveZeroes(nums);
+		System.out.println(Arrays.toString(nums));
 	}
 
 	//leetcode submit region begin(Prohibit modification and deletion)
@@ -30,7 +36,9 @@ public class MoveZeroes_283 {
 		public void moveZeroes(int[] nums) {
 			int k =0;
 			for (int i = 0; i < nums.length; i++) {
+				//非0元素就交换
 				if (nums[i] != 0 ){
+					//交换后k也++所以，如果第一位不是0，等于自己和自己交换，如果是0则每次0元素会后移
 					swap(nums, i, k++);
 				}
 			}

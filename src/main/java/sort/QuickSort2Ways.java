@@ -1,92 +1,71 @@
 package sort;
 
-import util.ArrayUtil;
+import java.util.Arrays;
 
 /**
- * 解决了重复元素过多的情况下，普通的快排性能问题。
- * 这种思路 大于和小于v的俩index往中间走的方式，
- * 如果在小的那边找到大的则停止，大的那边找到小的也停止，然后交换两边，在继续走。
- * 一次排序后交换 l和j
+ * 当数组中存在大量重复元素，无论是小于等于交换，还是小于交换，都会导致一边区域数据远大于另一半，当重复量很大时近似于一个O（n^2）的排序。
  *
+ * 1.避免数组近乎有序，先随机取出一个val，和第一个元素交换。
+ * 2.定义两个指针，i从头开始指向小于val的区域后一个元素，j从尾开始指向大于val的第一个元素。
+ * 3.当i所指向的值小于等于val，i++，否则暂停。当j所指向的值大于等于val，j--，否则暂停。当i和j都暂停时，交换i和j所指位置的元素。直到i>j结束，让start赋给j所指向的位置，返回j。
+ * 4.重复2.3直到start>end，排序完成。
  */
 public class QuickSort2Ways {
 
-    // 我们的算法类不允许产生任何实例
-    private QuickSort2Ways(){}
 
-    // 双路快速排序的partition
-    // 返回p, 使得arr[l...p-1] < arr[p] ; arr[p+1...r] > arr[p]
-    private static int partition(Comparable[] arr, int l, int r){
+	public static int[] qiuckSort2(int[] array) {
+		if (array.length <= 1) return array;
+		qiuck2(array, 0, array.length - 1);
+		return array;
+	}
 
-        // 随机在arr[l...r]的范围中, 选择一个数值作为标定点pivot
-//        swap( arr, l , (int)(Math.random()*(r-l+1))+l );
+	private static void qiuck2(int[] array, int start, int end) {
+		if (start > end) return;
+		int key = selectionKey2(array, start, end);
+		qiuck2(array, start, key - 1);
+		qiuck2(array, key + 1, end);
+	}
 
-        Comparable v = arr[l];
+	private static int selectionKey2(int[] array, int start, int end) {
+		int random = (int) (Math.random() * (end - start + 1) + start);
+		swap(array, random, start);
+        //当数组中元素基本上有序，每次取得第一个元素都是最大或最小值，会导致元素左右个数分布不不均匀，当完全有序时近似于一个O（n^2）的排序。
+        //解决：随机选取val值，在与第一个元素交换，让递归顺利进行。
+		int value = array[start];
+		//从头开始往后[start+1,i-1]
+		int i = start + 1;
+		//从尾开始往前[j+1,end]
+		int j = end;
+		while (true) {
+			//相当于把等于key的值均分到两边
+			while (i <= end && array[i] < value) i++;
+			while (j >= start + 1 && array[j] > value) j--;
+			//交换后两个指针都移动一步
+			if (i > j) break;
+			swap(array, i, j);
+			i++;
+			j--;
+		}
+		swap(array, start, j);
+		return j;
+	}
 
-        // arr[l+1...i) <= v; arr(j...r] >= v
-        int i = l+1, j = r;
-        while( true ){
-            // 注意这里的边界, arr[i].compareTo(v) < 0, 不能是arr[i].compareTo(v) <= 0
-            // 思考一下为什么?
-            while( i <= r && arr[i].compareTo(v) < 0 )
-                i ++;
+	private static void swap(int[] arr, int i, int j) {
+		int t = arr[i];
+		arr[i] = arr[j];
+		arr[j] = t;
+	}
 
-            // 注意这里的边界, arr[j].compareTo(v) > 0, 不能是arr[j].compareTo(v) >= 0
-            // 思考一下为什么?
-            while( j >= l+1 && arr[j].compareTo(v) > 0 )
-                j --;
+	// 测试 QuickSort
+	public static void main(String[] args) {
 
-            // 对于上面的两个边界的设定, 有的同学在课程的问答区有很好的回答:)
-            // 大家可以参考: http://coding.imooc.com/learn/questiondetail/4920.html
-
-            if( i > j )
-                break;
-
-            swap( arr, i, j );
-            i ++;
-            j --;
-        }
-        //这里的L其实是选出的标准值V。
-        swap(arr, l, j);
-
-        return j;
-    }
-
-    // 递归使用快速排序,对arr[l...r]的范围进行排序
-    private static void sort(Comparable[] arr, int l, int r){
-
-        // 对于小规模数组, 使用插入排序
-//        if( r - l <= 15 ){
-//            InsertionSort.sort(arr, l, r);
-//            return;
-//        }
-
-        int p = partition(arr, l, r);
-        sort(arr, l, p-1 );
-        sort(arr, p+1, r);
-    }
-
-    public static void sort(Comparable[] arr){
-
-        int n = arr.length;
-        sort(arr, 0, n-1);
-    }
-
-    private static void swap(Object[] arr, int i, int j) {
-        Object t = arr[i];
-        arr[i] = arr[j];
-        arr[j] = t;
-    }
-
-    // 测试 QuickSort
-    public static void main(String[] args) {
-
-        //双路快速排序算法也是一个O(nlogn)复杂度的算法
-        // 可以在1秒之内轻松处理100万数量级的数据
-        int N = 1000000;
+		//双路快速排序算法也是一个O(nlogn)复杂度的算法
+		// 可以在1秒之内轻松处理100万数量级的数据
+		int N = 1000000;
 //        ArrayUtil.orderAndPrintArr(new QuickSort2Ways());
-        Comparable[] data = ArrayUtil.getData(150);
-        QuickSort2Ways.sort(data);
-        System.out.println(data);
-    }
+//        Comparable[] data = ArrayUtil.getData(150);
+		int[] data = {1, 2, 3, 1, 1, 2, 3, 4, 6, 6, 1, 1, 2, 32};
+		QuickSort2Ways.qiuckSort2(data);
+		System.out.println(Arrays.toString(data));
+	}
 }
