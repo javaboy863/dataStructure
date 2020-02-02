@@ -12,7 +12,7 @@
 // 如果你已经完成了O(n) 时间复杂度的解法, 请尝试 O(n log n) 时间复杂度的解法。 
 // Related Topics 数组 双指针 二分查找
 
-package lc.double_pointer;
+package lc.double_pointer.slideWindow;
 
 /**
  * 时间O(N)
@@ -32,7 +32,7 @@ public class MinimumSizeSubarraySum_209 {
 			//[l...r]滑动窗口两个指针，r=-1标识不包含任何元素，如果为0则包含了元素
 			int l=0,r=-1;
 			int sum = 0;
-			//存放结果，初始值为最大值+1.
+			//存放结果，初始值为最大值+1.代表无效结果，这里不能设置为长度，这样就有结果了。
 			int res = nums.length+1;
 			//边界，只要左滑动窗口指针小于数组长度
 			while (l < nums.length){
