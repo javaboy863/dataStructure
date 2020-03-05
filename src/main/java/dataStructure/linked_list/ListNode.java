@@ -22,19 +22,19 @@ public class ListNode {
 		this.val = head.val;
 		this.next = head.next;
 	}
-	@Override
+	/*@Override
 	public String toString(){
 		StringBuilder res = new StringBuilder();
 		ListNode cur = this;
 		//只要拿到的元素不等于空
-		while(cur != null){
+		while(cur.next != null){
 			res.append(cur.val + "->");
 			//拿元素的下一个元素指向当前
 			cur = cur.next;
 		}
 		res.append("NULL");
 		return res.toString();
-	}
+	}*/
 
 	public static void main(String[] args) {
 		int[] nums = {0,1,2,3,4};
