@@ -20,7 +20,7 @@ package lc.double_pointer;
 
 import java.util.Arrays;
 /**
- * 对撞指针解决，设计j=0 k=length两个指针
+ * 对撞指针解决，设计j=0 k=length两个指针，往一起对撞。
  * i+j=target直接返回，i+j>target则k--,反之j++。
  * 退出条件i<j。
  * 时间O(n)，空间O(1)

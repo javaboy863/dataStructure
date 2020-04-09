@@ -11,7 +11,7 @@
 // 
 // Related Topics 数组 哈希表
 
-package lc.map;
+package lc.searchTable.map;
 
 
 import java.util.Arrays;

@@ -39,7 +39,7 @@
 //输出: true 
 // Related Topics 栈 字符串
 
-package lc.stack;
+package lc.searchTable.stack;
 
 import java.util.Stack;
 
